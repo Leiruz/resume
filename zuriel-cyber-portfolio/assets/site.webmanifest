@@ -1,0 +1,14 @@
+{
+  "name": "Zuriel Shanley Tanyory Cybersecurity Portfolio",
+  "short_name": "Zuriel Portfolio",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#02060a",
+  "background_color": "#02060a",
+  "display": "standalone"
+}

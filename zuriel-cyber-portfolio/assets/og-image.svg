@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Zuriel Shanley Tanyory Cybersecurity Portfolio</title>
+  <desc id="desc">Dark cyber dashboard social preview with neon green and cyan typography.</desc>
+  <defs>
+    <linearGradient id="accent" x1="120" y1="80" x2="1080" y2="550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#68ffb0"/>
+      <stop offset="0.52" stop-color="#62e8ff"/>
+      <stop offset="1" stop-color="#b48cff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="25%" cy="20%" r="70%">
+      <stop stop-color="#68ffb0" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#02060a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0v44" fill="none" stroke="#62e8ff" stroke-opacity="0.11" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#02060a"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="72" y="72" width="1056" height="486" rx="34" fill="#06111a" fill-opacity="0.78" stroke="url(#accent)" stroke-opacity="0.58" stroke-width="2"/>
+  <circle cx="112" cy="112" r="7" fill="#ff6b9a"/>
+  <circle cx="136" cy="112" r="7" fill="#ffd166"/>
+  <circle cx="160" cy="112" r="7" fill="#68ffb0"/>
+  <text x="90" y="210" fill="#68ffb0" font-family="Consolas, Menlo, monospace" font-size="30" letter-spacing="4">CYBERSECURITY PORTFOLIO</text>
+  <text x="90" y="318" fill="#eef7ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="-5">Zuriel Shanley</text>
+  <text x="90" y="390" fill="#eef7ff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="-5">Tanyory</text>
+  <text x="92" y="465" fill="#a7b7c8" font-family="Consolas, Menlo, monospace" font-size="29">SOC automation // EDR // SOAR // Secure Web // AI Security</text>
+  <path d="M800 156h238M800 214h160M800 272h266M800 330h214M800 388h284" stroke="#62e8ff" stroke-opacity="0.42" stroke-width="8" stroke-linecap="round"/>
+  <path d="M796 448h296" stroke="#68ffb0" stroke-opacity="0.75" stroke-width="2"/>
+  <text x="800" y="492" fill="#68ffb0" font-family="Consolas, Menlo, monospace" font-size="26">profile@zuriel:~$ deploy --static</text>
+</svg>
