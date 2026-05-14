@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">ZT cybersecurity monogram</title>
+  <desc id="desc">A dark shield favicon with green and cyan ZT initials.</desc>
+  <defs>
+    <linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#68ffb0"/>
+      <stop offset="1" stop-color="#62e8ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#02060a"/>
+  <path d="M32 7l22 8v16c0 14.3-8.5 23.5-22 28-13.5-4.5-22-13.7-22-28V15l22-8z" fill="#06111a" stroke="url(#g)" stroke-width="2"/>
+  <path d="M20 22h21l-18 20h21" fill="none" stroke="#68ffb0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 22h-9m9 0v20m-9 0h18" fill="none" stroke="#62e8ff" stroke-width="4" stroke-linecap="round"/>
+</svg>
