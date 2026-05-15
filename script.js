@@ -195,6 +195,104 @@ copyButton?.addEventListener('click', async () => {
   }
 });
 
+
+
+const aiConfig = window.ZURIEL_AI_CONFIG || {};
+const aiEndpoint = typeof aiConfig.endpoint === 'string' ? aiConfig.endpoint.trim() : '';
+const aiPanel = document.querySelector('#aiAssistant');
+const aiOpenButtons = [...document.querySelectorAll('[data-ai-open]')];
+const aiCloseButton = document.querySelector('[data-ai-close]');
+const aiForm = document.querySelector('#aiForm');
+const aiInput = document.querySelector('#aiInput');
+const aiMessages = document.querySelector('#aiMessages');
+const aiPromptButtons = [...document.querySelectorAll('[data-ai-prompt]')];
+const aiConversation = [];
+
+function setAIState(isOpen) {
+  if (!aiPanel) return;
+  aiPanel.classList.toggle('is-open', isOpen);
+  aiPanel.setAttribute('aria-hidden', String(!isOpen));
+  aiOpenButtons.forEach((button) => button.setAttribute('aria-expanded', String(isOpen)));
+  if (isOpen) window.setTimeout(() => aiInput?.focus(), 80);
+}
+
+function appendAIMessage(role, text) {
+  if (!aiMessages) return null;
+  const message = document.createElement('div');
+  message.className = `ai-message ${role}`;
+  message.textContent = text;
+  aiMessages.appendChild(message);
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+  return message;
+}
+
+function setAIStatus(isBusy) {
+  aiPanel?.setAttribute('data-busy', String(isBusy));
+  const submit = aiForm?.querySelector('button[type="submit"]');
+  if (submit) {
+    submit.disabled = isBusy;
+    submit.textContent = isBusy ? 'Thinking' : 'Ask';
+  }
+}
+
+async function askPortfolioAI(question) {
+  if (!question) return;
+  setAIState(true);
+  appendAIMessage('user', question);
+
+  if (!aiEndpoint) {
+    appendAIMessage('assistant', 'The AI Worker endpoint is not connected yet. Deploy the Cloudflare Worker in the worker folder, then paste its /chat URL into assets/ai/config.js.');
+    return;
+  }
+
+  setAIStatus(true);
+  const pending = appendAIMessage('assistant', 'Thinking...');
+
+  try {
+    const response = await fetch(aiEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: question,
+        history: aiConversation.slice(-6)
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'The assistant could not answer right now.');
+
+    const answer = data.answer || 'I could not find a resume-backed answer for that.';
+    if (pending) pending.textContent = answer;
+    aiConversation.push({ role: 'user', content: question });
+    aiConversation.push({ role: 'assistant', content: answer });
+  } catch (error) {
+    if (pending) pending.textContent = 'The AI assistant is unavailable right now. Please check the Worker URL, CORS origin, and Workers AI binding.';
+    console.warn('AI assistant error:', error);
+  } finally {
+    setAIStatus(false);
+  }
+}
+
+aiOpenButtons.forEach((button) => button.addEventListener('click', () => setAIState(true)));
+aiCloseButton?.addEventListener('click', () => setAIState(false));
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && aiPanel?.classList.contains('is-open')) setAIState(false);
+});
+aiPromptButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const prompt = button.dataset.aiPrompt || '';
+    if (aiInput) aiInput.value = prompt;
+    askPortfolioAI(prompt);
+  });
+});
+aiForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const question = aiInput?.value.trim() || '';
+  if (!question) return;
+  aiInput.value = '';
+  askPortfolioAI(question);
+});
+
 const backTop = document.querySelector('.back-top');
 window.addEventListener('scroll', () => {
   backTop?.classList.toggle('is-visible', window.scrollY > 900);
