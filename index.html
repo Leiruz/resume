@@ -57,6 +57,7 @@
             <a class="btn btn-primary" href="#work">View Work</a>
             <a class="btn" href="#projects">Projects</a>
             <a class="btn" href="mailto:zurielst@u.nus.edu">Contact</a>
+            <button class="btn" type="button" data-ai-open>Ask AI</button>
           </div>
           <div class="terminal-strip reveal" role="group" aria-label="Terminal introduction">
             <span class="prompt">$</span>
@@ -303,10 +304,44 @@
     </section>
   </main>
 
+
+  <button class="ai-launcher" type="button" data-ai-open aria-controls="aiAssistant" aria-expanded="false">
+    <span class="ai-launcher-dot" aria-hidden="true"></span>
+    <span>Ask AI</span>
+  </button>
+
+  <aside class="ai-panel" id="aiAssistant" aria-labelledby="aiTitle" aria-hidden="true">
+    <div class="ai-panel-head">
+      <div>
+        <span class="eyebrow">AI Resume Assistant</span>
+        <h2 id="aiTitle">Ask about Zuriel.</h2>
+      </div>
+      <button class="ai-close" type="button" data-ai-close aria-label="Close AI assistant">×</button>
+    </div>
+
+    <div class="ai-messages" id="aiMessages" role="log" aria-live="polite" aria-relevant="additions">
+      <div class="ai-message assistant">Ask about my SOC, EDR, secure software, consulting, certifications, projects, or leadership experience.</div>
+    </div>
+
+    <div class="ai-prompts" aria-label="Suggested questions">
+      <button type="button" data-ai-prompt="Summarize Zuriel for a cybersecurity consulting role.">Consulting fit</button>
+      <button type="button" data-ai-prompt="What SOC and EDR experience does Zuriel have?">SOC / EDR</button>
+      <button type="button" data-ai-prompt="Which projects show secure software development?">Secure projects</button>
+    </div>
+
+    <form class="ai-form" id="aiForm">
+      <label class="sr-only" for="aiInput">Ask the AI assistant a question</label>
+      <textarea id="aiInput" name="message" rows="2" maxlength="600" placeholder="Ask about my cybersecurity profile..."></textarea>
+      <button class="btn btn-primary" type="submit">Ask</button>
+    </form>
+    <p class="ai-disclaimer">Answers are generated from resume-backed portfolio context and should be verified for hiring decisions.</p>
+  </aside>
+
   <button class="back-top" type="button" aria-label="Back to top">↑</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz31rsHsY3b3LVMUO7EkwW/9GqN+K0b921OSq2kRvkH3qW1pbCLd9RjzH1mBQ4ckXxKnpYqNQxYgBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="assets/ai/config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
