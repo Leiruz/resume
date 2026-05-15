@@ -87,7 +87,7 @@ The site uses these CDN libraries only for front-end animation:
 - GSAP 3.12.5
 - GSAP ScrollTrigger 3.12.5
 
-The optional AI feature uses Cloudflare Workers AI through the Worker in `/worker`. No OpenAI key is required for the default implementation.
+The optional AI feature uses Cloudflare Workers AI through the Worker in `/worker`. No OpenAI key is required for the default implementation. The Worker supports both `GET /chat?message=...` and `POST /chat`; the website uses the GET path first to avoid browser preflight issues and falls back to POST.
 
 ## Content source
 
