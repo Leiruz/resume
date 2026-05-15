@@ -1,3 +1,7 @@
+const DEFAULT_MODEL = '@cf/meta/llama-3.2-1b-instruct';
+const MAX_MESSAGE_LENGTH = 600;
+const MAX_HISTORY_ITEMS = 6;
+
 const PROFILE_CONTEXT = `
 PUBLIC PROFILE CONTEXT FOR ZURIEL SHANLEY TANYORY
 Use only this context when answering. Do not invent facts. Do not reveal or infer private contact details. The public email is zurielst@u.nus.edu. Mobile number is intentionally excluded.
@@ -39,47 +43,84 @@ Leadership and community:
 - NullSec, Head of Publicity, Apr 2019 - May 2021. Active cybersecurity community participant at Ngee Ann Polytechnic. Helped organize inter-poly CTF Lag n Crash, YCEP CTF, and annual Hack'n'Flag CTF. Completed Cyber Defender Discovery Camp with six certifications, received recognition for Machine Learning in Cybersecurity, and attained 41st out of 237 teams in a CTF competition.
 `;
 
-function json(data, status = 200, headers = {}) {
-  return new Response(JSON.stringify(data), {
+function getModel(env) {
+  const candidate = typeof env.MODEL === 'string' ? env.MODEL.trim() : '';
+  return candidate.startsWith('@cf/') ? candidate : DEFAULT_MODEL;
+}
+
+const DEFAULT_ALLOWED_ORIGINS = [
+  'https://zurielst.com',
+  'https://www.zurielst.com',
+  'https://leiruz.github.io',
+  'null'
+];
+
+function normalizeOrigin(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw === '*' || raw === 'null') return raw;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return raw.replace(/\/+$/, '');
+  }
+}
+
+function allowedOrigins(env) {
+  const raw = String(env.ALLOWED_ORIGINS || env.ALLOWED_ORIGIN || '');
+  const configured = raw
+    .split(',')
+    .map(normalizeOrigin)
+    .filter(Boolean);
+
+  return [...new Set([...DEFAULT_ALLOWED_ORIGINS, ...configured])];
+}
+
+function corsHeaders(request, env) {
+  const requestOrigin = normalizeOrigin(request.headers.get('Origin') || '');
+  const allowed = allowedOrigins(env);
+  const allowAll = allowed.includes('*');
+  const isAllowed = allowAll || !requestOrigin || allowed.includes(requestOrigin);
+
+  // If the request comes from Zuriel's portfolio, reflect that exact origin.
+  // This avoids the common mismatch caused by trailing slashes in ALLOWED_ORIGIN.
+  const allowOrigin = allowAll ? '*' : isAllowed ? (requestOrigin || 'https://zurielst.com') : 'https://zurielst.com';
+
+  return {
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin'
+  };
+}
+function json(data, status, request, env) {
+  return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
-      'content-type': 'application/json; charset=utf-8',
-      ...headers
+      ...corsHeaders(request, env),
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store'
     }
   });
 }
 
-function getCorsHeaders(request, env) {
-  const origin = request.headers.get('Origin') || '';
-  const allowed = String(env.ALLOWED_ORIGINS || '')
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  const allowOrigin = allowed.length === 0
-    ? origin || '*'
-    : allowed.includes(origin)
-      ? origin
-      : allowed[0];
-
-  return {
-    'access-control-allow-origin': allowOrigin,
-    'access-control-allow-methods': 'POST, OPTIONS',
-    'access-control-allow-headers': 'content-type',
-    'vary': 'Origin'
-  };
+function clean(value, maxLength = MAX_MESSAGE_LENGTH) {
+  if (typeof value !== 'string') return '';
+  return value.replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maxLength);
 }
 
-function normalizeMessages(history) {
+function normalizeHistory(history) {
   if (!Array.isArray(history)) return [];
   return history
     .filter((item) => item && (item.role === 'user' || item.role === 'assistant') && typeof item.content === 'string')
-    .slice(-6)
-    .map((item) => ({ role: item.role, content: item.content.slice(0, 900) }));
+    .slice(-MAX_HISTORY_ITEMS)
+    .map((item) => ({ role: item.role, content: clean(item.content, 800) }));
 }
 
 function extractAnswer(result) {
   if (!result) return '';
+  if (typeof result === 'string') return result;
   if (typeof result.response === 'string') return result.response;
   if (typeof result.text === 'string') return result.text;
   if (typeof result.answer === 'string') return result.answer;
@@ -88,59 +129,108 @@ function extractAnswer(result) {
   return '';
 }
 
+async function runAssistant(env, message, history = []) {
+  if (!env.AI || typeof env.AI.run !== 'function') {
+    throw new Error('Workers AI binding is missing. Add a Workers AI binding named exactly AI.');
+  }
+
+  const system = `You are Zuriel Shanley Tanyory's AI resume assistant on his public cybersecurity portfolio website. Answer clearly, concisely, and professionally for recruiters and hiring managers. Use only the verified profile context below. Do not invent companies, dates, metrics, awards, links, certifications, publications, or private details. Do not mention a mobile number. If the context does not contain the answer, say that the information is not available from the verified resume context. Keep answers concise.\n\n${PROFILE_CONTEXT}`;
+
+  const messages = [
+    { role: 'system', content: system },
+    ...normalizeHistory(history),
+    { role: 'user', content: message }
+  ];
+
+  const model = getModel(env);
+  const result = await env.AI.run(model, {
+    messages,
+    max_tokens: 420,
+    temperature: 0.2
+  });
+
+  const answer = extractAnswer(result).trim();
+  return {
+    answer: answer || 'I could not generate a resume-backed answer for that question.',
+    model
+  };
+}
+
 export default {
   async fetch(request, env) {
-    const corsHeaders = getCorsHeaders(request, env);
     const url = new URL(request.url);
+    const path = url.pathname.replace(/\/+$/, '') || '/';
 
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders });
+      return new Response(null, { status: 204, headers: corsHeaders(request, env) });
     }
 
-    if (url.pathname !== '/chat') {
-      return json({ ok: true, message: 'Zuriel portfolio AI Worker is running. POST /chat to ask a question.' }, 200, corsHeaders);
+    if (request.method === 'GET' && path === '/') {
+      return json({ ok: true, service: 'Zuriel AI Resume Assistant', endpoint: '/chat', usage: 'GET /chat?message=... or POST /chat', health: '/health', test: '/test' }, 200, request, env);
     }
 
-    if (request.method !== 'POST') {
-      return json({ error: 'Use POST /chat.' }, 405, corsHeaders);
+    if (request.method === 'GET' && path === '/health') {
+      return json({
+        ok: true,
+        hasAI: Boolean(env.AI),
+        model: getModel(env),
+        allowedOriginsConfigured: Boolean(env.ALLOWED_ORIGINS || env.ALLOWED_ORIGIN),
+        defaultPortfolioOriginAllowed: true
+      }, 200, request, env);
     }
 
-    let body;
-    try {
-      body = await request.json();
-    } catch {
-      return json({ error: 'Invalid JSON body.' }, 400, corsHeaders);
+    if (request.method === 'GET' && path === '/cors-check') {
+      return json({
+        ok: true,
+        requestOrigin: request.headers.get('Origin') || null,
+        allowedOrigins: allowedOrigins(env),
+        cors: corsHeaders(request, env)
+      }, 200, request, env);
     }
 
-    const message = typeof body.message === 'string' ? body.message.trim().slice(0, 600) : '';
-    if (!message) {
-      return json({ error: 'Please provide a message.' }, 400, corsHeaders);
+    if (request.method === 'GET' && path === '/test') {
+      try {
+        const result = await runAssistant(env, 'Give a one-sentence summary of Zuriel for a cybersecurity recruiter.', []);
+        return json({ ok: true, ...result }, 200, request, env);
+      } catch (error) {
+        return json({ ok: false, error: error?.message || String(error), model: getModel(env) }, 500, request, env);
+      }
     }
 
-    const system = `You are Zuriel Shanley Tanyory's AI resume assistant on his public portfolio website. Answer clearly, concisely, and professionally for recruiters and hiring managers. Use only the profile context provided below. Do not invent companies, dates, metrics, awards, links, certifications, publications, or private details. Do not mention a mobile number. If the context does not contain the answer, say that the information is not available from the verified resume context. Prefer short paragraphs and direct bullets when useful.\n\n${PROFILE_CONTEXT}`;
+    if (path !== '/chat') {
+      return json({ error: 'Route not found. Use GET or POST /chat.' }, 404, request, env);
+    }
 
-    const messages = [
-      { role: 'system', content: system },
-      ...normalizeMessages(body.history),
-      { role: 'user', content: message }
-    ];
+    let message = '';
+    let history = [];
 
-    try {
-      const model = env.MODEL || '@cf/meta/llama-3.2-1b-instruct';
-      const result = await env.AI.run(model, {
-        messages,
-        max_tokens: 420,
-        temperature: 0.2
-      });
-
-      const answer = extractAnswer(result).trim();
-      if (!answer) {
-        return json({ answer: 'I could not generate a resume-backed answer for that question.' }, 200, corsHeaders);
+    if (request.method === 'GET') {
+      // GET support is intentional: it avoids browser JSON POST preflight problems
+      // for this small public resume assistant. The question is limited to 600 chars.
+      message = clean(url.searchParams.get('message') || url.searchParams.get('q') || url.searchParams.get('question') || '');
+    } else if (request.method === 'POST') {
+      let body;
+      try {
+        body = await request.json();
+      } catch {
+        return json({ error: 'Invalid JSON body.' }, 400, request, env);
       }
 
-      return json({ answer }, 200, corsHeaders);
+      message = clean(body.message || body.question || body.prompt || body.input || '');
+      history = Array.isArray(body.history) ? body.history : [];
+    } else {
+      return json({ error: 'Use GET /chat?message=... or POST /chat with JSON.' }, 405, request, env);
+    }
+
+    if (!message) {
+      return json({ error: 'Please provide a message.' }, 400, request, env);
+    }
+
+    try {
+      const result = await runAssistant(env, message, history);
+      return json(result, 200, request, env);
     } catch (error) {
-      return json({ error: 'Workers AI could not complete the request. Check the AI binding, model availability, and usage limits.' }, 500, corsHeaders);
+      return json({ error: error?.message || 'Workers AI could not complete the request.', model: getModel(env) }, 500, request, env);
     }
   }
 };
