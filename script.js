@@ -235,6 +235,41 @@ function setAIStatus(isBusy) {
   }
 }
 
+function buildAIGetURL(question) {
+  const url = new URL(aiEndpoint, window.location.href);
+  url.searchParams.set('message', question);
+  return url.toString();
+}
+
+async function readAIResponse(response) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'The assistant could not answer right now.');
+  return data.answer || data.response || data.text || 'I could not find a resume-backed answer for that.';
+}
+
+async function fetchPortfolioAI(question) {
+  // Primary path: GET avoids JSON POST preflight issues on some browser/CDN combinations.
+  try {
+    const getResponse = await fetch(buildAIGetURL(question), {
+      method: 'GET',
+      cache: 'no-store'
+    });
+    return await readAIResponse(getResponse);
+  } catch (getError) {
+    // Fallback path: keep POST support for browsers/environments where it works normally.
+    console.warn('AI assistant GET request failed; trying POST fallback:', getError);
+    const postResponse = await fetch(aiEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: question,
+        history: aiConversation.slice(-6)
+      })
+    });
+    return await readAIResponse(postResponse);
+  }
+}
+
 async function askPortfolioAI(question) {
   if (!question) return;
   setAIState(true);
@@ -249,24 +284,12 @@ async function askPortfolioAI(question) {
   const pending = appendAIMessage('assistant', 'Thinking...');
 
   try {
-    const response = await fetch(aiEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: question,
-        history: aiConversation.slice(-6)
-      })
-    });
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'The assistant could not answer right now.');
-
-    const answer = data.answer || 'I could not find a resume-backed answer for that.';
+    const answer = await fetchPortfolioAI(question);
     if (pending) pending.textContent = answer;
     aiConversation.push({ role: 'user', content: question });
     aiConversation.push({ role: 'assistant', content: answer });
   } catch (error) {
-    if (pending) pending.textContent = 'The AI assistant is unavailable right now. Please check the Worker URL, CORS origin, and Workers AI binding.';
+    if (pending) pending.textContent = 'The AI assistant is unavailable right now. Please refresh the page and try again. If this persists, check the Worker /chat endpoint.';
     console.warn('AI assistant error:', error);
   } finally {
     setAIStatus(false);
