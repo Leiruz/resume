@@ -1,4 +1,0 @@
-/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; script-src-elem 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com https://zuriel-ai-resume-assistant.zuriel-shanley.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
