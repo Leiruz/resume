@@ -1,0 +1,347 @@
+﻿[
+    {
+        "id":  "2d48824de9a0f9956381da890acd7e85",
+        "name":  "zurielst.com",
+        "type":  "A",
+        "content":  "185.199.111.153",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T03:16:28.950813Z",
+        "modified_on":  "2026-05-14T03:16:28.950813Z"
+    },
+    {
+        "id":  "742e9544900052c3efe611b9129a76cb",
+        "name":  "zurielst.com",
+        "type":  "A",
+        "content":  "185.199.110.153",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T03:16:17.657254Z",
+        "modified_on":  "2026-05-14T03:16:17.657254Z"
+    },
+    {
+        "id":  "1ecbc526485055d79110574a9ebd5d37",
+        "name":  "zurielst.com",
+        "type":  "A",
+        "content":  "185.199.109.153",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T03:16:09.540301Z",
+        "modified_on":  "2026-05-14T03:16:09.540301Z"
+    },
+    {
+        "id":  "717200a854b0f05a2db57122b3da66e0",
+        "name":  "zurielst.com",
+        "type":  "A",
+        "content":  "185.199.108.153",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T03:16:00.472626Z",
+        "modified_on":  "2026-05-14T03:16:00.472626Z"
+    },
+    {
+        "id":  "73fe47ebc0934b55ea59c980f5fd8b2e",
+        "name":  "citadel.zurielst.com",
+        "type":  "CNAME",
+        "content":  "leiruz.github.io",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+                         "flatten_cname":  false
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T09:01:13.043835Z",
+        "modified_on":  "2026-05-14T09:08:42.918565Z"
+    },
+    {
+        "id":  "2061fb791335ea583c3f7832d469874f",
+        "name":  "towerblock.zurielst.com",
+        "type":  "CNAME",
+        "content":  "leiruz.github.io",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+                         "flatten_cname":  false
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T09:09:02.202734Z",
+        "modified_on":  "2026-05-14T09:09:02.202734Z"
+    },
+    {
+        "id":  "b1cedc252592fd20fb9a38aa8af90481",
+        "name":  "www.zurielst.com",
+        "type":  "CNAME",
+        "content":  "leiruz.github.io",
+        "proxiable":  true,
+        "proxied":  true,
+        "ttl":  1,
+        "settings":  {
+                         "flatten_cname":  false
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-05-14T03:17:07.309143Z",
+        "modified_on":  "2026-05-14T03:17:07.309143Z"
+    },
+    {
+        "id":  "0f745cc8f58a30cdc1cf9ef8af1947f0",
+        "name":  "send.zurielst.com",
+        "type":  "MX",
+        "content":  "feedback-smtp.ap-northeast-1.amazonses.com",
+        "priority":  10,
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T06:59:36.335561Z",
+        "modified_on":  "2026-06-28T06:59:36.335561Z"
+    },
+    {
+        "id":  "9dc422cfcfb3f52f465053cf0266f5a5",
+        "name":  "zurielst.com",
+        "type":  "MX",
+        "content":  "route3.mx.cloudflare.net",
+        "priority":  43,
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+                     "email_routing":  true,
+                     "read_only":  true
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T12:41:37.15767Z",
+        "modified_on":  "2026-06-28T12:41:37.15767Z"
+    },
+    {
+        "id":  "821e5d5010eba3d3f9306b531ea44159",
+        "name":  "zurielst.com",
+        "type":  "MX",
+        "content":  "route2.mx.cloudflare.net",
+        "priority":  42,
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+                     "email_routing":  true,
+                     "read_only":  true
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T12:41:37.150246Z",
+        "modified_on":  "2026-06-28T12:41:37.150246Z"
+    },
+    {
+        "id":  "5789fb309f92ed2d9280459607492e2f",
+        "name":  "zurielst.com",
+        "type":  "MX",
+        "content":  "route1.mx.cloudflare.net",
+        "priority":  40,
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+                     "email_routing":  true,
+                     "read_only":  true
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T12:41:37.142017Z",
+        "modified_on":  "2026-06-28T12:41:37.142017Z"
+    },
+    {
+        "id":  "c05d953c323938e8782f326ab5f9b8a9",
+        "name":  "cf2024-1._domainkey.zurielst.com",
+        "type":  "TXT",
+        "content":  "\"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k\" \"m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB\"",
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+                     "email_routing":  true,
+                     "read_only":  true
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T12:41:37.172112Z",
+        "modified_on":  "2026-06-28T12:41:37.172112Z"
+    },
+    {
+        "id":  "904a1dae9096892d4b69fdd342dac61b",
+        "name":  "_github-pages-challenge-leiruz.zurielst.com",
+        "type":  "TXT",
+        "content":  "9b12f027284d802d083d6bb3ec739c",
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  "GitHub Pages domain verification (incident fix 2026-08-30)",
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-08-30T04:30:22.752858Z",
+        "modified_on":  "2026-08-30T04:30:22.752858Z",
+        "comment_modified_on":  "2026-08-30T04:30:22.752858Z"
+    },
+    {
+        "id":  "cf2c1cc090b7b5fb0cc5ba274ae9c592",
+        "name":  "resend._domainkey.zurielst.com",
+        "type":  "TXT",
+        "content":  "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDwSN12lyuGumrQI+D9WF43ngZSZSDoClJ0jwXUkWk5CfEnJeOHNaOcsf0/OQDL5gJ6mfyO3CkaJBRFdgj2hshHs4uWjfSAFMvY6rfSpvFURw3R0NFAyeiios9KsPwToJi3dtuLxsf6NHdzJgm/UU5dL3YT3HH/xxOlD7Q+j+Qp0QIDAQAB",
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T06:59:35.438974Z",
+        "modified_on":  "2026-06-28T06:59:35.438974Z"
+    },
+    {
+        "id":  "1234ff17b4ad8ea866838d6a2a719656",
+        "name":  "send.zurielst.com",
+        "type":  "TXT",
+        "content":  "v=spf1 include:amazonses.com ~all",
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T06:59:37.240862Z",
+        "modified_on":  "2026-06-28T06:59:37.240862Z"
+    },
+    {
+        "id":  "87a9a0e6fbdf395e266e99fb94200287",
+        "name":  "zurielst.com",
+        "type":  "TXT",
+        "content":  "\"v=spf1 include:_spf.mx.cloudflare.net ~all\"",
+        "proxiable":  false,
+        "proxied":  false,
+        "ttl":  1,
+        "settings":  {
+
+                     },
+        "meta":  {
+
+                 },
+        "comment":  null,
+        "tags":  [
+
+                 ],
+        "created_on":  "2026-06-28T12:41:37.164983Z",
+        "modified_on":  "2026-06-28T12:41:37.164983Z"
+    }
+]

@@ -1,0 +1,24 @@
+﻿{
+    "description":  "",
+    "id":  "d48f57ecad064551bb872a2fa2637406",
+    "kind":  "zone",
+    "last_updated":  "2026-08-30T04:30:25.124993Z",
+    "name":  "default",
+    "phase":  "http_config_settings",
+    "rules":  [
+                  {
+                      "action":  "set_config",
+                      "action_parameters":  {
+                                                "ssl":  "full"
+                                            },
+                      "description":  "TEMP incident fix 2026-08-30: SSL Full for apex+www while GitHub Pages cert re-issues. DELETE after cert healthy (runbook A5).",
+                      "enabled":  true,
+                      "expression":  "(http.host in {\"zurielst.com\" \"www.zurielst.com\"})",
+                      "id":  "82a0f48d538f47b284851f827d7760a4",
+                      "last_updated":  "2026-08-30T04:30:25.124993Z",
+                      "ref":  "82a0f48d538f47b284851f827d7760a4",
+                      "version":  "1"
+                  }
+              ],
+    "version":  "1"
+}
